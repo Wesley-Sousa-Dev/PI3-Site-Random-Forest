@@ -5,6 +5,7 @@ from dash_iconify import DashIconify
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
+import os
 
 dark_theme_bg = "linear-gradient(135deg, #1a1d24 0%, #2a2e3a 100%)"
 light_theme_bg = "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)"
@@ -806,5 +807,6 @@ def update_table(selected_year, theme):
     )
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 8050))
+    app.run(host='0.0.0.0', port=port, debug=False)
