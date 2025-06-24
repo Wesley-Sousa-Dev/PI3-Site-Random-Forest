@@ -397,7 +397,7 @@ app.layout = html.Div(
                                         style={"color": cor_detalhes},
                                     ),
                                     html.Span(
-                                        "Dashboard Soja RS",
+                                        "Produtividade da Soja no RS",
                                         className="navbar-brand mb-0 h1 fw-bold",
                                         style={
                                             "color": cor_detalhes,
