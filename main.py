@@ -429,10 +429,10 @@ app.layout = html.Div(
                         className="px-3 d-flex justify-content-between align-items-center",
                     ),
                     className="shadow-sm",
-                    style={"minHeight": "56px"},
+                    # REMOVIDO: style={"minHeight": "56px"},
                 )
             ],
-            className="d-block d-md-none",  # Só aparece no mobile
+            className="d-block d-md-none",
         ),
         dbc.Container(
             [
@@ -657,7 +657,7 @@ def update_selected_year(selected_year):
 @callback(
     [
         Output("main-container", "style"),
-        Output("mobile-navbar", "style"),
+        Output("mobile-navbar", "children"),  # ALTERADO: de "style" para "children"
         Output("subtitle-text", "children"),
         Output("subtitle-text", "style"),
         Output("footer-text", "style"),
@@ -709,15 +709,60 @@ def update_theme(theme, is_mobile):
         "paddingTop": "56px" if is_mobile else "0",  # Espaço para navbar mobile
     }
 
-    mobile_navbar_style = {
-        "position": "fixed",
-        "top": "0",
-        "left": "0",
-        "right": "0",
-        "zIndex": "1030",
-        "background": navbar_bg,
-        "borderBottom": f"2px solid {cor_detalhes}",
-    }
+    mobile_navbar_children = [
+        dbc.Navbar(
+            dbc.Container(
+                [
+                    html.Div(
+                        [
+                            DashIconify(
+                                icon="fa:line-chart",
+                                width=24,
+                                className="me-2",
+                                style={"color": cor_detalhes},
+                            ),
+                            html.Span(
+                                "Dashboard Soja RS",
+                                className="navbar-brand mb-0 h1 fw-bold",
+                                style={"color": cor_detalhes, "fontSize": "1.2rem"},
+                            ),
+                        ],
+                        className="d-flex align-items-center",
+                    ),
+                    html.Button(
+                        id="theme-toggle-mobile",
+                        children=[html.Span(theme_icon, id="theme-icon-mobile")],
+                        style={
+                            "background": "transparent",
+                            "border": f"1px solid {cor_detalhes}",
+                            "borderRadius": "50%",
+                            "cursor": "pointer",
+                            "fontSize": "1.2rem",
+                            "height": "40px",
+                            "width": "40px",
+                            "display": "flex",
+                            "alignItems": "center",
+                            "justifyContent": "center",
+                            "transition": "all 0.3s ease",
+                        },
+                    ),
+                ],
+                fluid=True,
+                className="px-3 d-flex justify-content-between align-items-center",
+            ),
+            className="shadow-sm",
+            style={
+                "minHeight": "56px",
+                "position": "fixed",
+                "top": "0",
+                "left": "0",
+                "right": "0",
+                "zIndex": "1030",
+                "background": navbar_bg,
+                "borderBottom": f"3px solid {cor_detalhes}",
+            },
+        )
+    ]
 
     subtitle_text = (
         "Modelagem com Random Forest usando dados climáticos de 2018-2025 para previsões de produtividade."
@@ -848,7 +893,7 @@ def update_theme(theme, is_mobile):
 
     return (
         main_style,
-        mobile_navbar_style,
+        mobile_navbar_children,
         subtitle_text,
         subtitle_style,
         footer_text_style,
