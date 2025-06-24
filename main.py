@@ -722,7 +722,7 @@ def update_theme(theme, is_mobile):
                                 style={"color": cor_detalhes},
                             ),
                             html.Span(
-                                "Dashboard Soja RS",
+                                "Produtividade da Soja no RS",
                                 className="navbar-brand mb-0 h1 fw-bold",
                                 style={"color": cor_detalhes, "fontSize": "1.2rem"},
                             ),
