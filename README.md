@@ -58,14 +58,15 @@ http://localhost:8050
 
 ## ✅ Métricas do Modelo
 
-- **Coeficiente de Determinação (R²):** 0.9566
-- **Erro Percentual Absoluto Médio (MAPE):** 4.58%
+- **Coeficiente de Determinação (R²):** 0.9870
+- **Erro Percentual Absoluto Médio (MAPE):** 2.1332%
 - **Melhores parâmetros do Random Forest:**
-  - `n_estimators`: 4000
-  - `max_depth`: 35
-  - `max_features`: sqrt
-  - `min_samples_split`: 2
-  - `min_samples_leaf`: 1
+  - `n_estimators`: 800
+  - `max_depth`: 10
+  - `min_samples_split`: 5
+  - `min_samples_leaf`: 3
+  - `max_features`: 0.5
+  - `random_state`: 42
 
 ---
 
