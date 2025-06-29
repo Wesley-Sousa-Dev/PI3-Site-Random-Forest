@@ -580,9 +580,9 @@ model_data = {
     "feature_names": [
         "Sazonalidade (Cosseno)",
         "Sazonalidade (Seno)",
-        "Temperatura Média (°C)\\n(6 meses)",
-        "Precipitação Média (mm)\\n(6 meses)",
-        "Temperatura x Precipitação\\n(Interação)",
+        "Temperatura Média (°C) (6 meses)",
+        "Precipitação Média (mm) (6 meses)",
+        "Temperatura x Precipitação (Interação)",
         "Área Plantada (ha)",
     ],
     "feature_importances": np.array(
@@ -694,11 +694,13 @@ def create_feature_importance_graph(theme="light", is_mobile=False):
     if theme == "dark":
         bg_color = "#1a1d24"
         text_color = "#e0e0e0"
-        green_colors = ["#2d5016", "#3d6b1f", "#4d8629", "#5da032", "#6ebb3c"]
+        # Do mais claro (mais importante) para o mais escuro (menos importante)
+        green_colors = ["#6ebb3c", "#5da032", "#4d8629", "#3d6b1f", "#2d5016", "#1e3a0f"]
     else:
         bg_color = "rgba(0,0,0,0)"
         text_color = "#2d5016"
-        green_colors = ["#2d5016", "#3d6b1f", "#4d8629", "#5da032", "#6ebb3c"]
+        # Do mais claro (mais importante) para o mais escuro (menos importante)
+        green_colors = ["#6ebb3c", "#5da032", "#4d8629", "#3d6b1f", "#2d5016", "#1e3a0f"]
 
     fig = go.Figure(
         go.Bar(
