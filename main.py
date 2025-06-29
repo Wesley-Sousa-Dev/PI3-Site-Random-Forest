@@ -585,64 +585,61 @@ model_data = {
         "Temperatura x Precipitação (Interação)",
         "Área Plantada (ha)",
     ],
-    "feature_importances": np.array(
-        [0.033403, 0.064645, 0.129054, 0.158810, 0.205696, 0.408393]
-    ),
-    # Dados reais do conjunto de teste (simulados baseados no padrão do modelo)
+    "feature_importances": np.array([0.03, 0.06, 0.13, 0.16, 0.21, 0.41]),
     "y_test_real": np.array(
         [
+            1472,
+            2976,
+            3104,
+            3093,
+            2983,
+            3206,
+            2811,
+            3140,
+            3206,
+            2967,
+            3104,
+            3141,
+            1949,
+            3177,
+            2972,
+            2850,
             3178,
-            1883,
-            3324,
             1500,
             2809,
-            3341,
-            1949,
             1912,
-            3193,
-            3045,
-            1472,
-            1912,
-            3244,
-            2758,
-            1503,
-            3207,
             2227,
+            1503,
             1894,
-            3226,
-            2069,
-            3312,
-            1512,
-            3249,
-            2280,
+            2942,
         ]
     ),
     "y_pred_real": np.array(
         [
-            3156,
-            1901,
-            3298,
-            1523,
-            2785,
-            3318,
-            1971,
-            1889,
-            3171,
-            3021,
-            1495,
-            1934,
-            3221,
-            2736,
-            1526,
-            3184,
-            2249,
-            1916,
-            3203,
-            2091,
-            3289,
-            1534,
-            3227,
-            2302,
+            1576.7,
+            2970.68,
+            3104.65,
+            3118.74,
+            2935.95,
+            3193.74,
+            2816.04,
+            3112.79,
+            3238.87,
+            2929.00,
+            3112.30,
+            3245.58,
+            2178.71,
+            3200.44,
+            2967.98,
+            2907.51,
+            3195.27,
+            1538.74,
+            2822.85,
+            2007.44,
+            2193.69,
+            1552.73,
+            2006.69,
+            2944.96,
         ]
     ),
 }
@@ -695,12 +692,26 @@ def create_feature_importance_graph(theme="light", is_mobile=False):
         bg_color = "#1a1d24"
         text_color = "#e0e0e0"
         # Do mais claro (mais importante) para o mais escuro (menos importante)
-        green_colors = ["#6ebb3c", "#5da032", "#4d8629", "#3d6b1f", "#2d5016", "#1e3a0f"]
+        green_colors = [
+            "#6ebb3c",
+            "#5da032",
+            "#4d8629",
+            "#3d6b1f",
+            "#2d5016",
+            "#1e3a0f",
+        ]
     else:
         bg_color = "rgba(0,0,0,0)"
         text_color = "#2d5016"
         # Do mais claro (mais importante) para o mais escuro (menos importante)
-        green_colors = ["#6ebb3c", "#5da032", "#4d8629", "#3d6b1f", "#2d5016", "#1e3a0f"]
+        green_colors = [
+            "#6ebb3c",
+            "#5da032",
+            "#4d8629",
+            "#3d6b1f",
+            "#2d5016",
+            "#1e3a0f",
+        ]
 
     fig = go.Figure(
         go.Bar(
@@ -723,7 +734,7 @@ def create_feature_importance_graph(theme="light", is_mobile=False):
 
     fig.update_layout(
         title={
-            "text": "🎯 Importância das Variáveis",
+            "text": "Importância das Variáveis",
             "x": 0.5,
             "xanchor": "center",
             "font": {
