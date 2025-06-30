@@ -1,101 +1,139 @@
-# 🌱 Previsão da Produtividade da Soja com Random Forest
+# Dashboard de Produtividade da Soja no RS
 
-Dashboard interativo desenvolvido em Python com **Dash**, aplicando técnicas de **modelagem matemática e computacional** para prever a produtividade da soja no município de Tupanciretã (RS), considerando variáveis climáticas e agrícolas. A aplicação visa orientar estratégias adaptativas frente às mudanças climáticas.
-
----
-
-## 📋 Funcionalidades Principais
-
-- Visualização da **importância das variáveis** na previsão da produção de soja.
-- Comparação entre **valores reais e predições** feitas por modelo Random Forest.
-- Filtro interativo por ano para explorar **dados históricos simulados (2018–2025)**.
-- Exibição tabular de dados históricos com destaque para **anomalias climáticas** e **altas produtividades**.
-- Alternância entre **temas claro e escuro** no painel.
+Este é um dashboard interativo desenvolvido em Python com a biblioteca **Dash** para visualizar e analisar a produtividade da soja no estado do Rio Grande do Sul, Brasil. Ele utiliza um modelo de **Random Forest** para prever a produtividade com base em dados históricos de temperatura, precipitação e área plantada.
 
 ---
 
-## 📊 Variáveis Consideradas
+## 📄 Sobre o Projeto
 
-- **Mês**
-- **Temperatura Média (°C)**
-- **Precipitação (mm)**
-- **Área Plantada (ha)**
-- **Área Colhida (ha)**
-- **Produção (ton)**
+A produção de soja é altamente suscetível às condições climáticas. Este projeto visa quantificar e prever o impacto das variações mensais de temperatura e precipitação na produtividade da soja no Rio Grande do Sul, utilizando um modelo de Machine Learning (Random Forest). O dashboard oferece uma interface para explorar os dados históricos e os resultados do modelo de forma clara e acessível.
+
+### Objetivos:
+
+* Analisar a relação entre variáveis climáticas e a produtividade da soja.
+* Desenvolver um modelo preditivo robusto (Random Forest) para estimar a produtividade da soja.
+* Identificar as variáveis de maior influência na produtividade.
+* Fornecer uma ferramenta interativa para visualização de dados históricos e desempenho do modelo.
 
 ---
 
-## ⚙️ Requisitos
+## 🚀 Funcionalidades
 
-- Python 3.x  
-- Instale as dependências com:
+O dashboard oferece as seguintes funcionalidades:
 
-```bash
+* **Visão Geral do Modelo**: Exibe métricas chave do modelo Random Forest, como R² e MAPE.
+* **Importância das Variáveis**: Um gráfico de barras que mostra a contribuição de cada variável para a previsão da produtividade.
+* **Análise de Predições**: Um gráfico de dispersão que compara os valores reais e previstos da produtividade.
+* **Dados Históricos Interativos**: Uma tabela filtrável por ano, apresentando dados mensais de temperatura média, precipitação média, área plantada e rendimento médio da produção.
+* **Design Responsivo**: Adapta-se a diferentes tamanhos de tela (desktop e mobile).
+* **Modo Claro/Escuro**: Opção para alternar entre temas claro e escuro para melhor experiência visual.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+O projeto foi desenvolvido utilizando as seguintes bibliotecas e ferramentas:
+
+* **Python**: Linguagem de programação principal.
+* **Dash**: Framework para a construção de aplicações web analíticas.
+* **Dash Bootstrap Components (dbc)**: Componentes Bootstrap para um design responsivo e moderno.
+* **Dash Iconify**: Biblioteca para fácil integração de ícones.
+* **Plotly Graph Objects**: Para criação de gráficos interativos.
+* **Pandas**: Manipulação e análise de dados.
+* **NumPy**: Suporte para operações numéricas.
+
+---
+
+## ⚙️ Como Executar o Projeto
+
+Para rodar este projeto localmente, siga os passos abaixo:
+
+### Pré-requisitos
+
+Certifique-se de ter o Python 3.8 ou superior instalado.
+
+### 1. Clonar o Repositório
+
+git clone [https://github.com/Wesley-Sousa-Dev/PI3-Site-Random-Forest.git](https://github.com/Wesley-Sousa-Dev/PI3-Site-Random-Forest.git)
+cd PI3-Site-Random-Forest
+
+### 2\. Criar e Ativar o Ambiente Virtual (Opcional, mas recomendado)
+
+python -m venv venv
+# No Windows
+.\venv\Scripts\activate
+# No macOS/Linux
+source venv/bin/activate
+
+### 3\. Instalar as Dependências
+
 pip install -r requirements.txt
-```
 
-📄 *Arquivo `requirements.txt` inclui:*  
-`dash`, `dash-bootstrap-components`, `dash-iconify`, `plotly`, `pandas`, `numpy`
+Se o arquivo `requirements.txt` não estiver disponível, você pode criar um com as seguintes dependências:
 
----
+dash
+dash-bootstrap-components
+dash-iconify
+plotly
+pandas
+numpy
 
-## 🚀 Como Executar
+Ou instale-as manualmente:
 
-1. Clone este repositório ou baixe os arquivos.
-2. No terminal, execute:
+pip install dash dash-bootstrap-components dash-iconify plotly pandas numpy
 
-```bash
+### 4\. Executar o Aplicativo Dash
+
 python main.py
-```
 
-3. Acesse o dashboard no navegador:
+(Assumindo que o arquivo principal da aplicação se chama `app.py`)
 
-```
-http://localhost:8050
-```
+Após executar o comando, o dashboard estará disponível em `http://127.0.0.1:8050/` ou na porta especificada pela variável de ambiente `PORT`.
 
----
+-----
 
-## ✅ Métricas do Modelo
+## 📊 Dados Utilizados
 
-- **Coeficiente de Determinação (R²):** 0.9870
-- **Erro Percentual Absoluto Médio (MAPE):** 2.1332%
-- **Melhores parâmetros do Random Forest:**
-  - `n_estimators`: 800
-  - `max_depth`: 10
-  - `min_samples_split`: 5
-  - `min_samples_leaf`: 3
-  - `max_features`: 0.5
-  - `random_state`: 42
+Os dados utilizados neste estudo abrangem o período de janeiro de 2015 a fevereiro de 2025 para o estado do Rio Grande do Sul:
 
----
+  * **Temperatura Média (°C) e Precipitação Média (mm)**: Obtidos da plataforma [NASA POWER](https://power.larc.nasa.gov/data-access-viewer/).
+  * **Área Plantada (ha) e Rendimento Médio da Produção (kg/ha)**: Obtidos do [Levantamento Sistemático da Produção Agrícola (LSPA) do IBGE - SIDRA](https://sidra.ibge.gov.br/tabela/6588).
 
-## 🧠 Modelo Utilizado
+Esses dados foram cruciais para treinar e validar o modelo de Random Forest, permitindo uma análise robusta da influência das condições climáticas na produtividade da soja.
 
-O modelo de aprendizado de máquina **Random Forest** foi calibrado com dados históricos de clima e produção, realizando predições robustas com alta acurácia. A análise de importância das variáveis permite interpretar **quais fatores mais influenciam a produtividade da soja**.
+-----
 
----
+## 💡 Modelo de Random Forest
 
-## 📅 Escopo Temporal
+O modelo preditivo empregado é um **Random Forest Regression**, que apresentou um excelente desempenho na previsão da produtividade da soja.
 
-- Simulação de dados mensais de **2018 a 2025**
-- Baseado em padrões sazonais, ruído estatístico e comportamento climático realista
+### Métricas de Desempenho:
 
----
+  * **R² (Coeficiente de Determinação)**: **0.9870**
+      * Indica que aproximadamente 98.7% da variância na produtividade da soja é explicada pelas variáveis de entrada do modelo. Um valor próximo a 1 indica um ajuste quase perfeito.
+  * **MAPE (Erro Percentual Absoluto Médio)**: **2.13%**
+      * Representa que, em média, as previsões do modelo desviam-se apenas 2.13% dos valores reais, demonstrando alta precisão.
 
-## 🌍 Contribuição ao ODS 13
+### Parâmetros do Modelo (`best_params`):
 
-Este projeto contribui com o **Objetivo de Desenvolvimento Sustentável 13** da ONU (*Ação contra a mudança global do clima*), oferecendo uma solução científica para mitigação de riscos agrícolas decorrentes de alterações climáticas.
+  * `n_estimators`: 800 
+  * `max_depth`: 10 
+  * `min_samples_split`: 5
+  * `min_samples_leaf`: 3 
+  * `max_features`: 0.5
+  * `random_state`: 42 
 
----
+### Importância das Variáveis:
 
-## 📌 Local de Estudo
+As variáveis foram ranqueadas pela sua importância no modelo:
 
-**Município de Tupanciretã – Rio Grande do Sul (RS)**  
-Foco na análise da produtividade agrícola em nível local com potencial de expansão regional.
+1.  **Área plantada (ha)**: 41%
+2.  **Temperatura x Precipitação (Interação)**: 21%
+3.  **Precipitação Média (mm) - 6 meses**: 16%
+4.  **Temperatura Média (°C) - 6 meses**: 13%
+5.  **Sazonalidade (Seno)**: 6%
+6.  **Sazonalidade (Cosseno)**: 3%
 
----
+Esses resultados mostram que a **área plantada** é o fator mais influente na produtividade, seguido pelas **interações entre temperatura e precipitação**, e as médias históricas dessas variáveis climáticas.
 
-## 👨‍🔬 Autoria
-
-Projeto acadêmico desenvolvido para análise de dados climáticos e sua correlação com a produção agrícola, com ênfase em aplicações práticas para políticas públicas e planejamento agrícola sustentável.
+-----
