@@ -538,10 +538,10 @@ df_historico = df.rename(
         "mes_nome": "Mês",
         "temp_media": "Temperatura média (°C)",
         "precip_media": "Precipitação média (mm)",
-        "area_plantada": "Área Plantada (ha)",
+        "area_plantada": "Área plantada (ha)",
         "rendimento": "Rendimento médio da produção (kg/ha)",
     }
-)[["Ano", "Mês", "Temperatura média (°C)", "Precipitação média (mm)", "Área Plantada (ha)", "Rendimento médio da produção (kg/ha)"]]
+)[["Ano", "Mês", "Temperatura média (°C)", "Precipitação média (mm)", "Área plantada (ha)", "Rendimento médio da produção (kg/ha)"]]
 
 
 # Reordenar colunas
@@ -551,7 +551,7 @@ df_historico = df_historico[
         "Mês",
         "Temperatura média (°C)",
         "Precipitação média (mm)",
-        "Área Plantada (ha)",
+        "Área plantada (ha)",
         "Rendimento médio da produção (kg/ha)",
     ]
 ]
@@ -580,7 +580,7 @@ model_data = {
         "Temperatura Média (°C) - 6 meses",
         "Precipitação Média (mm) - 6 meses",
         "Temperatura x Precipitação (Interação)",
-        "Área Plantada (ha)",
+        "Área plantada (ha)",
     ],
     "feature_importances": np.array([0.03, 0.06, 0.13, 0.16, 0.21, 0.41]),
     "y_test_real": np.array(
@@ -1506,7 +1506,7 @@ def update_table(selected_year, theme, is_mobile):
     display_data["Precipitação média (mm)"] = display_data["Precipitação média (mm)"].apply(
         lambda x: format_brl(x, 1)
     )
-    display_data["Área Plantada (ha)"] = display_data["Área Plantada (ha)"].apply(
+    display_data["Área plantada (ha)"] = display_data["Área plantada (ha)"].apply(
         lambda x: format_brl(x, 0)
     )
     display_data["Rendimento médio da produção (kg/ha)"] = display_data["Rendimento médio da produção (kg/ha)"].apply(
@@ -1530,8 +1530,8 @@ def update_table(selected_year, theme, is_mobile):
             "type": "text",
         },
         {
-            "name": "Á. Plant (ha)" if is_mobile else "Área Plantada (ha)",
-            "id": "Área Plantada (ha)",
+            "name": "Á. Plant (ha)" if is_mobile else "Área plantada (ha)",
+            "id": "Área plantada (ha)",
             "type": "text",
         },
         {
