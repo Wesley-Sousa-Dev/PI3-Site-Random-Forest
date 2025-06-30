@@ -536,26 +536,23 @@ df_historico = df.rename(
     columns={
         "ano": "Ano",
         "mes_nome": "Mês",
-        "temp_media": "Temperatura",
-        "precip_media": "Precipitação",
-        "area_plantada": "Área Plantada",
-        "rendimento": "Produção",
+        "temp_media": "Temperatura média (°C)",
+        "precip_media": "Precipitação média (mm)",
+        "area_plantada": "Área Plantada (ha)",
+        "rendimento": "Rendimento médio da produção (kg/ha)",
     }
-)[["Ano", "Mês", "Temperatura", "Precipitação", "Área Plantada", "Produção"]]
+)[["Ano", "Mês", "Temperatura média (°C)", "Precipitação média (mm)", "Área Plantada (ha)", "Rendimento médio da produção (kg/ha)"]]
 
-# Adicionar coluna Área Colhida (assumindo 95% da área plantada como exemplo)
-df_historico["Área Colhida"] = (df_historico["Área Plantada"] * 0.95).astype(int)
 
 # Reordenar colunas
 df_historico = df_historico[
     [
         "Ano",
         "Mês",
-        "Temperatura",
-        "Precipitação",
-        "Área Plantada",
-        "Área Colhida",
-        "Produção",
+        "Temperatura média (°C)",
+        "Precipitação média (mm)",
+        "Área Plantada (ha)",
+        "Rendimento médio da produção (kg/ha)",
     ]
 ]
 
@@ -580,8 +577,8 @@ model_data = {
     "feature_names": [
         "Sazonalidade (Cosseno)",
         "Sazonalidade (Seno)",
-        "Temperatura Média (°C) (6 meses)",
-        "Precipitação Média (mm) (6 meses)",
+        "Temperatura Média (°C) - 6 meses",
+        "Precipitação Média (mm) - 6 meses",
         "Temperatura x Precipitação (Interação)",
         "Área Plantada (ha)",
     ],
@@ -691,24 +688,32 @@ def create_feature_importance_graph(theme="light", is_mobile=False):
     if theme == "dark":
         bg_color = "#1a1d24"
         text_color = "#e0e0e0"
-        bar_color = "#00F020"
     else:
         bg_color = "rgba(0,0,0,0)"
         text_color = "#2d5016"
-        bar_color = "#00F020"
+
+    green_colors = [
+        "#6ebb3c",
+        "#5da032",
+        "#4d8629",
+        "#3d6b1f",
+        "#2d5016",
+        "#1e3a0f",
+    ]
 
     feature_names = np.array(model_data["feature_names"])
     feature_importances = np.array(model_data["feature_importances"])
     order = np.argsort(feature_importances)
     feature_names = feature_names[order][::-1]
     feature_importances = feature_importances[order][::-1]
+    bar_colors = green_colors[::-1]  # alinhar cor clara com mais importante
 
     fig = go.Figure(
         go.Bar(
             x=feature_importances,
             y=feature_names,
             orientation="h",
-            marker=dict(color=bar_color, line=dict(color="#000000", width=1)),
+            marker=dict(color=bar_colors, line=dict(color="#1e3a0f", width=1)),
             hovertemplate="<b>%{y}</b><br>Importância: %{x:.1%}<extra></extra>",
         )
     )
@@ -1306,11 +1311,11 @@ def update_theme(theme, is_mobile):
     title_container_style = {"fontSize": title_size, "color": cor_detalhes}
 
     metric_card_1 = create_metric_card(
-        "Coeficiente R²",
+        "R²",
         f"{model_data['r2']:.4f}".replace(".", ","),
         "fa:line-chart",
         "success",
-        "Qualidade do ajuste",
+        "Coeficiente de determinação",
         theme,
         is_mobile,
     )
@@ -1319,7 +1324,7 @@ def update_theme(theme, is_mobile):
         f"{model_data['mape']:.2f}%".replace(".", ","),
         "fa:percent",
         "success",
-        "Erro percentual médio",
+        "Erro percentual absoluto médio",
         theme,
         is_mobile,
     )
@@ -1480,7 +1485,33 @@ def update_table(selected_year, theme, is_mobile):
             ]
         )
 
-    display_data = filtered_data.drop("Ano", axis=1)
+    display_data = filtered_data.drop("Ano", axis=1).copy()
+
+    # Formatação brasileira para números
+    def format_brl(x, dec=0):
+        if pd.isnull(x):
+            return ""
+        if dec == 0:
+            return (
+                f"{int(round(x)):,}".replace(",", "X")
+                .replace(".", ",")
+                .replace("X", ".")
+            )
+        else:
+            return f"{x:,.{dec}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+    display_data["Temperatura média (°C)"] = display_data["Temperatura média (°C)"].apply(
+        lambda x: format_brl(x, 1)
+    )
+    display_data["Precipitação média (mm)"] = display_data["Precipitação média (mm)"].apply(
+        lambda x: format_brl(x, 1)
+    )
+    display_data["Área Plantada (ha)"] = display_data["Área Plantada (ha)"].apply(
+        lambda x: format_brl(x, 0)
+    )
+    display_data["Rendimento médio da produção (kg/ha)"] = display_data["Rendimento médio da produção (kg/ha)"].apply(
+        lambda x: format_brl(x, 0)
+    )
 
     cell_padding = "8px" if is_mobile else "15px"
     font_size = "12px" if is_mobile else "14px"
@@ -1489,34 +1520,24 @@ def update_table(selected_year, theme, is_mobile):
     columns = [
         {"name": "Mês", "id": "Mês", "type": "text"},
         {
-            "name": "Temp (°C)" if is_mobile else "Temperatura (°C)",
-            "id": "Temperatura",
-            "type": "numeric",
-            "format": {"specifier": ".1f"},
+            "name": "Temp (°C)" if is_mobile else "Temperatura média (°C)",
+            "id": "Temperatura média (°C)",
+            "type": "text",
         },
         {
-            "name": "Precip (mm)" if is_mobile else "Precipitação (mm)",
-            "id": "Precipitação",
-            "type": "numeric",
-            "format": {"specifier": ".1f"},
+            "name": "Precip (mm)" if is_mobile else "Precipitação média (mm)",
+            "id": "Precipitação média (mm)",
+            "type": "text",
         },
         {
             "name": "Á. Plant (ha)" if is_mobile else "Área Plantada (ha)",
-            "id": "Área Plantada",
-            "type": "numeric",
-            "format": {"specifier": ",.0f"},
+            "id": "Área Plantada (ha)",
+            "type": "text",
         },
         {
-            "name": "Á. Colh (ha)" if is_mobile else "Área Colhida (ha)",
-            "id": "Área Colhida",
-            "type": "numeric",
-            "format": {"specifier": ",.0f"},
-        },
-        {
-            "name": "Prod (kg/ha)" if is_mobile else "Produção (kg/ha)",
-            "id": "Produção",
-            "type": "numeric",
-            "format": {"specifier": ",.0f"},
+            "name": "Rend. (kg/ha)" if is_mobile else "Rendimento médio da produção (kg/ha)",
+            "id": "Rendimento médio da produção (kg/ha)",
+            "type": "text",
         },
     ]
 
@@ -1532,11 +1553,7 @@ def update_table(selected_year, theme, is_mobile):
                                 className="me-2",
                                 style={"color": cor_detalhes},
                             ),
-                            (
-                                "Dados Históricos"
-                                if is_mobile
-                                else "Dados Históricos por Ano"
-                            ),
+                            "Dados Experimentais",
                         ],
                         className="mb-0 fw-bold",
                         style={
@@ -1586,33 +1603,6 @@ def update_table(selected_year, theme, is_mobile):
                                         "if": {"row_index": "odd"},
                                         "backgroundColor": table_row_even,
                                     },
-                                    {
-                                        "if": {
-                                            "column_id": "Temperatura",
-                                            "filter_query": "{Temperatura} > 28",
-                                        },
-                                        "backgroundColor": "rgba(255, 193, 193, 0.7)",
-                                        "color": "black",
-                                        "fontWeight": "bold",
-                                    },
-                                    {
-                                        "if": {
-                                            "column_id": "Precipitação",
-                                            "filter_query": "{Precipitação} > 200",
-                                        },
-                                        "backgroundColor": "rgba(173, 216, 230, 0.7)",
-                                        "color": "black",
-                                        "fontWeight": "bold",
-                                    },
-                                    {
-                                        "if": {
-                                            "column_id": "Produção",
-                                            "filter_query": "{Produção} > 2800",
-                                        },
-                                        "backgroundColor": "rgba(144, 238, 144, 0.8)",
-                                        "color": "black",
-                                        "fontWeight": "bold",
-                                    },
                                 ],
                                 style_cell_conditional=[
                                     {
@@ -1628,11 +1618,89 @@ def update_table(selected_year, theme, is_mobile):
                                 ],
                                 page_size=12,
                                 sort_action="native",
-                                filter_action="native" if not is_mobile else "none",
                             )
                         ],
                         style={"overflowX": "auto"},
-                    )
+                    ),
+                    # Seção de fontes dos dados
+                    html.Div(
+                        [
+                            html.Hr(
+                                style={
+                                    "border-color": cor_detalhes,
+                                    "border-width": "1px",
+                                    "margin": "20px 0 15px 0",
+                                }
+                            ),
+                            html.Small(
+                                [
+                                    html.B(
+                                        "📊 Fontes dos dados:",
+                                        style={
+                                            "color": cor_detalhes,
+                                            "fontSize": "1rem",
+                                        },
+                                    ),
+                                    html.Br(),
+                                    html.Br(),
+                                    "🌡️ Temperatura e precipitação: ",
+                                    html.A(
+                                        "NASA POWER",
+                                        href="https://power.larc.nasa.gov/data-access-viewer/",
+                                        target="_blank",
+                                        style={
+                                            "color": cor_detalhes,
+                                            "textDecoration": "underline",
+                                            "fontWeight": "bold",
+                                        },
+                                    ),
+                                    html.Br(),
+                                    html.Small(
+                                        "NASA Prediction Of Worldwide Energy Resources (POWER)",
+                                        style={
+                                            "color": text_color,
+                                            "fontStyle": "italic",
+                                        },
+                                    ),
+                                    html.Br(),
+                                    html.Br(),
+                                    "🌾 Área plantada e rendimento: ",
+                                    html.A(
+                                        "IBGE - SIDRA",
+                                        href="https://sidra.ibge.gov.br/tabela/6588",
+                                        target="_blank",
+                                        style={
+                                            "color": cor_detalhes,
+                                            "textDecoration": "underline",
+                                            "fontWeight": "bold",
+                                        },
+                                    ),
+                                    html.Br(),
+                                    html.Small(
+                                        "IBGE - Levantamento Sistemático da Produção Agrícola",
+                                        style={
+                                            "color": text_color,
+                                            "fontStyle": "italic",
+                                        },
+                                    ),
+                                ],
+                                style={
+                                    "fontSize": "0.9rem" if is_mobile else "1rem",
+                                    "color": text_color,
+                                    "display": "block",
+                                    "lineHeight": "1.4",
+                                    "padding": "10px",
+                                    "backgroundColor": (
+                                        "rgba(40, 167, 69, 0.05)"
+                                        if theme == "light"
+                                        else "rgba(40, 167, 69, 0.1)"
+                                    ),
+                                    "borderRadius": "8px",
+                                    "border": f"1px solid {cor_detalhes}",
+                                },
+                            ),
+                        ]
+                    ),
                 ],
                 style={
                     "backgroundColor": card_color,
