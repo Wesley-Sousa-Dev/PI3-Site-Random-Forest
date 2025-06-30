@@ -819,7 +819,7 @@ def create_predictions_graph(theme="light", is_mobile=False):
 
     fig.update_layout(
         title={
-            "text": "Dispersão: Valor Real vs Previsto",  # Título igual ao original
+            "text": "Dispersão: Valor Real vs Previsto (Teste)",  # Título igual ao original
             "x": 0.5,
             "xanchor": "center",
             "font": {
@@ -1350,9 +1350,9 @@ def update_theme(theme, is_mobile):
             dbc.CardHeader(
                 [
                     html.H5(
-                        "Análise de Importância",
+                        "Gráfico de Barras: Análise das Variáveis do Modelo",
                         className="mb-0 fw-bold",
-                        style={
+                        style={ 
                             "color": cor_detalhes,
                             "fontSize": "1rem" if is_mobile else "1.25rem",
                         },
@@ -1383,7 +1383,7 @@ def update_theme(theme, is_mobile):
             dbc.CardHeader(
                 [
                     html.H5(
-                        "Análise de Predições",
+                        "Gráfico de Dispersão: Análise de Predições",
                         className="mb-0 fw-bold",
                         style={
                             "color": cor_detalhes,
