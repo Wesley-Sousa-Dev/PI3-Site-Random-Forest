@@ -691,39 +691,24 @@ def create_feature_importance_graph(theme="light", is_mobile=False):
     if theme == "dark":
         bg_color = "#1a1d24"
         text_color = "#e0e0e0"
-        # Do mais claro (mais importante) para o mais escuro (menos importante)
-        green_colors = [
-            "#6ebb3c",
-            "#5da032",
-            "#4d8629",
-            "#3d6b1f",
-            "#2d5016",
-            "#1e3a0f",
-        ]
+        bar_color = "#00F020"
     else:
         bg_color = "rgba(0,0,0,0)"
         text_color = "#2d5016"
-        # Do mais claro (mais importante) para o mais escuro (menos importante)
-        green_colors = [
-            "#6ebb3c",
-            "#5da032",
-            "#4d8629",
-            "#3d6b1f",
-            "#2d5016",
-            "#1e3a0f",
-        ]
+        bar_color = "#00F020"
+
+    feature_names = np.array(model_data["feature_names"])
+    feature_importances = np.array(model_data["feature_importances"])
+    order = np.argsort(feature_importances)
+    feature_names = feature_names[order][::-1]
+    feature_importances = feature_importances[order][::-1]
 
     fig = go.Figure(
         go.Bar(
-            x=sorted_feature_importances,
-            y=sorted_feature_names,
+            x=feature_importances,
+            y=feature_names,
             orientation="h",
-            marker=dict(color=green_colors, line=dict(color="#1e3a0f", width=1)),
-            text=[f"{val:.1%}" for val in sorted_feature_importances],
-            textposition="inside",
-            textfont=dict(
-                color="white", size=10 if is_mobile else 12, family="Arial Black"
-            ),
+            marker=dict(color=bar_color, line=dict(color="#000000", width=1)),
             hovertemplate="<b>%{y}</b><br>Importância: %{x:.1%}<extra></extra>",
         )
     )
@@ -743,8 +728,8 @@ def create_feature_importance_graph(theme="light", is_mobile=False):
                 "color": cor_detalhes,
             },
         },
-        xaxis_title="Importância (%)" if is_mobile else "Importância Relativa (%)",
-        yaxis_title="Variáveis",
+        xaxis_title="Importância",
+        yaxis_title="Variável",
         height=height,
         margin=dict(l=margin_left, r=30 if is_mobile else 50, t=60, b=50),
         showlegend=False,
@@ -1352,7 +1337,7 @@ def update_theme(theme, is_mobile):
                     html.H5(
                         "Gráfico de Barras: Análise das Variáveis do Modelo",
                         className="mb-0 fw-bold",
-                        style={ 
+                        style={
                             "color": cor_detalhes,
                             "fontSize": "1rem" if is_mobile else "1.25rem",
                         },
