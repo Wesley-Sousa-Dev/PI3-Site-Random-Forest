@@ -1643,7 +1643,7 @@ def update_table(selected_year, theme, is_mobile):
                                     ),
                                     html.Br(),
                                     html.Br(),
-                                    "🌡️ Temperatura e precipitação: ",
+                                    "🌡️🌧️ Temperatura e precipitação: ",
                                     html.A(
                                         "NASA POWER",
                                         href="https://power.larc.nasa.gov/data-access-viewer/",
