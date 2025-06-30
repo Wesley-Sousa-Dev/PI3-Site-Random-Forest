@@ -49,16 +49,7 @@ git clone https://github.com/Wesley-Sousa-Dev/PI3-Site-Random-Forest.git
 cd PI3-Site-Random-Forest
 ```
 
-### 🧪 2. Criar e Ativar Ambiente Virtual (opcional)
-```bash
-python -m venv venv
-# Windows
-.env\Scriptsctivate
-# macOS/Linux
-source venv/bin/activate
-```
-
-### 📦 3. Instalar Dependências
+### 📦 2. Instalar Dependências
 ```bash
 pip install -r requirements.txt
 ```
@@ -68,7 +59,7 @@ Se `requirements.txt` não estiver presente:
 pip install dash dash-bootstrap-components dash-iconify plotly pandas numpy
 ```
 
-### ▶️ 4. Executar o Aplicativo
+### ▶️ 3. Executar o Aplicativo
 ```bash
 python main.py
 ```
