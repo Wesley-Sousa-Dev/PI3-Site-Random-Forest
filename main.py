@@ -541,7 +541,16 @@ df_historico = df.rename(
         "area_plantada": "Área plantada (ha)",
         "rendimento": "Rendimento médio da produção (kg/ha)",
     }
-)[["Ano", "Mês", "Temperatura média (°C)", "Precipitação média (mm)", "Área plantada (ha)", "Rendimento médio da produção (kg/ha)"]]
+)[
+    [
+        "Ano",
+        "Mês",
+        "Temperatura média (°C)",
+        "Precipitação média (mm)",
+        "Área plantada (ha)",
+        "Rendimento médio da produção (kg/ha)",
+    ]
+]
 
 
 # Reordenar colunas
@@ -663,7 +672,7 @@ app = dash.Dash(
         {"name": "theme-color", "content": "#28a745"},
     ],
 )
-app.title = "Random Forest ML Dashboard"
+app.title = "Random Forest Dashboard"
 
 cor_detalhes = "#28a745"
 
@@ -847,7 +856,7 @@ def create_metric_card(
     title,
     value,
     icon,
-    color_class="success",
+    color="#28a745",  # Agora aceita cor hexadecimal
     subtitle=None,
     theme="light",
     is_mobile=False,
@@ -874,12 +883,12 @@ def create_metric_card(
                             DashIconify(
                                 icon=icon,
                                 width=icon_size,
-                                className=f"text-{color_class} mb-2",
+                                style={"color": color, "marginBottom": "0.5rem"},
                             ),
                             html.H2(
                                 value,
-                                className=f"text-{color_class} fw-bold mb-1",
-                                style={"fontSize": value_size},
+                                className="fw-bold mb-1",
+                                style={"fontSize": value_size, "color": color},
                             ),
                             html.P(
                                 title,
@@ -909,7 +918,7 @@ def create_metric_card(
         className="h-100 shadow border-0",
         style={
             "background": card_bg,
-            "border-left": f"5px solid {cor_detalhes} !important",
+            "border-left": f"5px solid {color} !important",
         },
     )
 
@@ -1314,7 +1323,7 @@ def update_theme(theme, is_mobile):
         "R²",
         f"{model_data['r2']:.4f}".replace(".", ","),
         "fa:line-chart",
-        "success",
+        "#28a745",  # Cor verde exata
         "Coeficiente de determinação",
         theme,
         is_mobile,
@@ -1323,7 +1332,7 @@ def update_theme(theme, is_mobile):
         "MAPE",
         f"{model_data['mape']:.2f}%".replace(".", ","),
         "fa:percent",
-        "success",
+        "#28a745",  # Cor verde exata
         "Erro percentual absoluto médio",
         theme,
         is_mobile,
@@ -1500,18 +1509,18 @@ def update_table(selected_year, theme, is_mobile):
         else:
             return f"{x:,.{dec}f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
-    display_data["Temperatura média (°C)"] = display_data["Temperatura média (°C)"].apply(
-        lambda x: format_brl(x, 1)
-    )
-    display_data["Precipitação média (mm)"] = display_data["Precipitação média (mm)"].apply(
-        lambda x: format_brl(x, 1)
-    )
+    display_data["Temperatura média (°C)"] = display_data[
+        "Temperatura média (°C)"
+    ].apply(lambda x: format_brl(x, 1))
+    display_data["Precipitação média (mm)"] = display_data[
+        "Precipitação média (mm)"
+    ].apply(lambda x: format_brl(x, 1))
     display_data["Área plantada (ha)"] = display_data["Área plantada (ha)"].apply(
         lambda x: format_brl(x, 0)
     )
-    display_data["Rendimento médio da produção (kg/ha)"] = display_data["Rendimento médio da produção (kg/ha)"].apply(
-        lambda x: format_brl(x, 0)
-    )
+    display_data["Rendimento médio da produção (kg/ha)"] = display_data[
+        "Rendimento médio da produção (kg/ha)"
+    ].apply(lambda x: format_brl(x, 0))
 
     cell_padding = "8px" if is_mobile else "15px"
     font_size = "12px" if is_mobile else "14px"
@@ -1535,7 +1544,9 @@ def update_table(selected_year, theme, is_mobile):
             "type": "text",
         },
         {
-            "name": "Rend. (kg/ha)" if is_mobile else "Rendimento médio da produção (kg/ha)",
+            "name": (
+                "Rend. (kg/ha)" if is_mobile else "Rendimento médio da produção (kg/ha)"
+            ),
             "id": "Rendimento médio da produção (kg/ha)",
             "type": "text",
         },
