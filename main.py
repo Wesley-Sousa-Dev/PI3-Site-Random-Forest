@@ -1614,6 +1614,24 @@ def update_table(selected_year, theme, is_mobile):
                                         "if": {"row_index": "odd"},
                                         "backgroundColor": table_row_even,
                                     },
+                                    # DESABILITAR HOVER:
+                                    {
+                                        "if": {"state": "hover"},
+                                        "backgroundColor": table_cell_bg,
+                                        "color": table_cell_color,
+                                    },
+                                    # DESABILITAR HOVER QUANDO SELECIONADO:
+                                    {
+                                        "if": {"state": "selected"},
+                                        "backgroundColor": table_cell_bg,
+                                        "color": table_cell_color,
+                                    },
+                                    # DESABILITAR HOVER QUANDO ATIVO:
+                                    {
+                                        "if": {"state": "active"},
+                                        "backgroundColor": table_cell_bg,
+                                        "color": table_cell_color,
+                                    },
                                 ],
                                 style_cell_conditional=[
                                     {
@@ -1625,6 +1643,36 @@ def update_table(selected_year, theme, is_mobile):
                                             else f"rgba(40, 167, 69, 0.15)"
                                         ),
                                         "minWidth": "70px" if is_mobile else "100px",
+                                    },
+                                    # DESABILITAR HOVER PARA COLUNA MÊS:
+                                    {
+                                        "if": {"column_id": "Mês", "state": "hover"},
+                                        "backgroundColor": (
+                                            f"rgba(40, 167, 69, 0.05)"
+                                            if theme == "light"
+                                            else f"rgba(40, 167, 69, 0.15)"
+                                        ),
+                                        "fontWeight": "bold",
+                                    },
+                                    # DESABILITAR SELEÇÃO PARA COLUNA MÊS:
+                                    {
+                                        "if": {"column_id": "Mês", "state": "selected"},
+                                        "backgroundColor": (
+                                            f"rgba(40, 167, 69, 0.05)"
+                                            if theme == "light"
+                                            else f"rgba(40, 167, 69, 0.15)"
+                                        ),
+                                        "fontWeight": "bold",
+                                    },
+                                    # DESABILITAR ATIVO PARA COLUNA MÊS:
+                                    {
+                                        "if": {"column_id": "Mês", "state": "active"},
+                                        "backgroundColor": (
+                                            f"rgba(40, 167, 69, 0.05)"
+                                            if theme == "light"
+                                            else f"rgba(40, 167, 69, 0.15)"
+                                        ),
+                                        "fontWeight": "bold",
                                     },
                                 ],
                                 page_size=12,
